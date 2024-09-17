@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RequestMapping(value = "/trips")
@@ -26,5 +27,12 @@ public class ControllerTrip {
         this.participantService.registerParticipantToTrip(obj.email_to_invite(), newTrip.getId());
 
         return ResponseEntity.ok(new TripCreateResponse(newTrip.getId()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Trip> getTripDetails(@PathVariable UUID id) {
+        Optional<Trip> trip = repositoryTrip.findById(id);
+
+        return trip.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
