@@ -8,7 +8,7 @@ import java.util.UUID;
 @Service
 public class ParticipantService {
 
-    public void registerParticipantToTrip(List<String> participantsToInvite, UUID tripId){};
+    public void registerParticipantToTrip(List<String> participantsToInvite, UUID tripId){}
 
-    public void confirmedEmailToParticipant(UUID tripId){};
+    public void confirmedEmailToParticipant(UUID tripId){}
 }
