@@ -1,5 +1,8 @@
 package com.tiago.planning.trip;
 
+import com.tiago.planning.participant.Participant;
+import com.tiago.planning.participant.ParticipantCreateResponse;
+import com.tiago.planning.participant.ParticipantRequestLoad;
 import com.tiago.planning.participant.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -65,9 +70,26 @@ public class ControllerTrip {
             rowTrip.setIsConfirmed(true);
 
             this.repositoryTrip.save(rowTrip);
-            this.participantService.confirmedEmailToParticipant(id);
+            this.participantService.confirmedEmailToParticipants(id);
 
             return ResponseEntity.ok(rowTrip);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{id}/invite")
+    public ResponseEntity<ParticipantCreateResponse> inviteParticipant(@PathVariable UUID id, @RequestBody ParticipantRequestLoad obj) {
+        Optional<Trip> trip = this.repositoryTrip.findById(id);
+
+        if (trip.isPresent()) {
+            Trip rowTrip = trip.get();
+
+            ParticipantCreateResponse participantResponse = this.participantService.registerParticipantToEvent(obj.email(), rowTrip);
+
+            if (rowTrip.getIsConfirmed()) this.participantService.confirmedEmailToParticipant(obj.email());
+
+            return ResponseEntity.ok(participantResponse);
         }
 
         return ResponseEntity.notFound().build();

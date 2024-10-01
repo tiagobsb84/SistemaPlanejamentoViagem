@@ -1,6 +1,7 @@
 package com.tiago.planning.participant;
 
 import com.tiago.planning.trip.Trip;
+import com.tiago.planning.trip.TripCreateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,14 @@ public class ParticipantService {
         System.out.println(participants.get(0).getId());
     }
 
-    public void confirmedEmailToParticipant(UUID tripId){}
+    public ParticipantCreateResponse registerParticipantToEvent(String email, Trip trip) {
+        Participant newParticipant = new Participant(email, trip);
+        this.repositoryParticipant.save(newParticipant);
+
+        return new ParticipantCreateResponse(newParticipant.getId());
+    }
+
+    public void confirmedEmailToParticipants(UUID id){}
+
+    public void confirmedEmailToParticipant(String email){}
 }
