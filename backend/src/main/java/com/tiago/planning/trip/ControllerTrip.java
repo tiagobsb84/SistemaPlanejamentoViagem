@@ -1,9 +1,6 @@
 package com.tiago.planning.trip;
 
-import com.tiago.planning.participant.Participant;
-import com.tiago.planning.participant.ParticipantCreateResponse;
-import com.tiago.planning.participant.ParticipantRequestLoad;
-import com.tiago.planning.participant.ParticipantService;
+import com.tiago.planning.participant.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -93,5 +90,12 @@ public class ControllerTrip {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/participants")
+    public ResponseEntity<List<GetDataParticipants>> getAllParticipantTrip(@PathVariable UUID id) {
+        List<GetDataParticipants> listaParticipants = this.participantService.getAllParticipantsTrips(id);
+
+        return  ResponseEntity.ok(listaParticipants);
     }
 }

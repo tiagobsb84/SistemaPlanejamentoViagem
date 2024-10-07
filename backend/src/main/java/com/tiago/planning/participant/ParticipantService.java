@@ -32,4 +32,9 @@ public class ParticipantService {
     public void confirmedEmailToParticipants(UUID id){}
 
     public void confirmedEmailToParticipant(String email){}
+
+    public List<GetDataParticipants> getAllParticipantsTrips(UUID id) {
+        return this.repositoryParticipant.findByTripId(id).stream().map(participant -> new GetDataParticipants(
+                participant.getId(), participant.getName(), participant.getEmail(), participant.getIsConfirmed())).toList();
+    }
 }
