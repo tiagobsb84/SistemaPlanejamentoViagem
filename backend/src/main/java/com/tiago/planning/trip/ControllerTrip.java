@@ -1,5 +1,6 @@
 package com.tiago.planning.trip;
 
+import com.tiago.planning.activides.ActivityData;
 import com.tiago.planning.activides.ActivityRequestLoad;
 import com.tiago.planning.activides.ActivityResponse;
 import com.tiago.planning.activides.ActivityService;
@@ -94,6 +95,13 @@ public class ControllerTrip {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/activities")
+    public ResponseEntity<List<ActivityData>> getAllActivity(@PathVariable UUID id) {
+        List<ActivityData> activityData = this.activityService.getAllActivityFromId(id);
+
+        return ResponseEntity.ok(activityData);
     }
 
     @PostMapping("/{id}/invite")
