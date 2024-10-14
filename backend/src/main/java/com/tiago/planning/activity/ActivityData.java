@@ -1,4 +1,4 @@
-package com.tiago.planning.activides;
+package com.tiago.planning.activity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.tiago.planning.activides;
+package com.tiago.planning.activity;
 
 import com.tiago.planning.trip.Trip;
 import org.springframework.beans.factory.annotation.Autowired;

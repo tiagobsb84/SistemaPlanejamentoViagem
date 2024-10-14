@@ -1,4 +1,4 @@
-package com.tiago.planning.activides;
+package com.tiago.planning.activity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
