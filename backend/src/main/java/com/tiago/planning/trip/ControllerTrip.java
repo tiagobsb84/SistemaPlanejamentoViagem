@@ -1,5 +1,8 @@
 package com.tiago.planning.trip;
 
+import com.tiago.planning.activides.ActivityRequestLoad;
+import com.tiago.planning.activides.ActivityResponse;
+import com.tiago.planning.activides.ActivityService;
 import com.tiago.planning.participant.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,9 @@ public class ControllerTrip {
 
     @Autowired
     private ParticipantService participantService;
+
+    @Autowired
+    private ActivityService activityService;
 
     @PostMapping
     public ResponseEntity<TripCreateResponse> createTrip(@RequestBody TripRequestLoad obj) {
@@ -70,6 +76,21 @@ public class ControllerTrip {
             this.participantService.confirmedEmailToParticipants(id);
 
             return ResponseEntity.ok(rowTrip);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{id}/activities")
+    public ResponseEntity<ActivityResponse> registerActivity(@PathVariable UUID id, @RequestBody ActivityRequestLoad obj) {
+        Optional<Trip> trip = this.repositoryTrip.findById(id);
+
+        if(trip.isPresent()) {
+            Trip rowTrip = trip.get();
+
+            ActivityResponse activityResponse = this.activityService.registerActivity(obj, rowTrip);
+
+            return ResponseEntity.ok(activityResponse);
         }
 
         return ResponseEntity.notFound().build();
