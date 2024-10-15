@@ -4,6 +4,9 @@ import com.tiago.planning.activity.ActivityData;
 import com.tiago.planning.activity.ActivityRequestLoad;
 import com.tiago.planning.activity.ActivityResponse;
 import com.tiago.planning.activity.ActivityService;
+import com.tiago.planning.link.LinkResponse;
+import com.tiago.planning.link.LinkResponseLoad;
+import com.tiago.planning.link.LinkService;
 import com.tiago.planning.participant.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +20,7 @@ import java.util.UUID;
 
 @RequestMapping(value = "/trips")
 @RestController
-public class ControllerTrip {
+public class TripController {
 
     @Autowired
     private RepositoryTrip repositoryTrip;
@@ -27,6 +30,9 @@ public class ControllerTrip {
 
     @Autowired
     private ActivityService activityService;
+
+    @Autowired
+    private LinkService linkService;
 
     @PostMapping
     public ResponseEntity<TripCreateResponse> createTrip(@RequestBody TripRequestLoad obj) {
@@ -125,5 +131,21 @@ public class ControllerTrip {
         List<GetDataParticipants> listaParticipants = this.participantService.getAllParticipantsTrips(id);
 
         return  ResponseEntity.ok(listaParticipants);
+    }
+
+    // Links
+    @PostMapping("/{id}/links")
+    public ResponseEntity<LinkResponse> registerLinks(@PathVariable UUID id, @RequestBody LinkResponseLoad obj) {
+        Optional<Trip> trip = this.repositoryTrip.findById(id);
+
+        if(trip.isPresent()) {
+            Trip rowTrip = trip.get();
+
+            LinkResponse linkResponse = this.linkService.registerLink(obj, rowTrip);
+
+            return ResponseEntity.ok(linkResponse);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
