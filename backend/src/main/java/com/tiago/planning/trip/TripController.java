@@ -4,9 +4,7 @@ import com.tiago.planning.activity.ActivityData;
 import com.tiago.planning.activity.ActivityRequestLoad;
 import com.tiago.planning.activity.ActivityResponse;
 import com.tiago.planning.activity.ActivityService;
-import com.tiago.planning.link.LinkResponse;
-import com.tiago.planning.link.LinkResponseLoad;
-import com.tiago.planning.link.LinkService;
+import com.tiago.planning.link.*;
 import com.tiago.planning.participant.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -147,5 +145,12 @@ public class TripController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/links")
+    public ResponseEntity<List<LinkData>> getAllLinks(@PathVariable UUID id) {
+        List<LinkData> linkData = this.linkService.getAllLinks(id);
+
+        return ResponseEntity.ok(linkData);
     }
 }
