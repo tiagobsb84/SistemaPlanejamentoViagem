@@ -9,6 +9,10 @@ export function App() {
     setIsGuestsInputOpen(true);
   }
 
+  function closeGuestsInput() {
+    setIsGuestsInputOpen(false);
+  }
+
   return (
     <div className="h-screen flex items-center justify-center bg-pattern bg-no-repeat bg-center">
       <div className="w-3xl px-6 text-center space-y-10">
@@ -21,18 +25,18 @@ export function App() {
           <div className="h-16 bg-zinc-950 px -4 rounded-xl flex items-center shadow-shape gap-3">
             <div className="flex items-center gap-2 flex-1">
               <MapPin className="size-5 text-zinc-400" />
-              <input type="text" placeholder="Para onde você vai?" className="bg-transparent text-lg placeholder-zinc-400 outline-none" />
+              <input disabled={isGuestsInputOpen} type="text" placeholder="Para onde você vai?" className="bg-transparent text-lg placeholder-zinc-400 outline-none" />
             </div>
             
             <div className="flex items-center gap-2">
               <Calendar className="size-5 text-zinc-400" />
-              <input type="text" placeholder="Quando?" className="bg-transparent text-lg placeholder-zinc-400 w-40 outline-none" />
+              <input disabled={isGuestsInputOpen} type="text" placeholder="Quando?" className="bg-transparent text-lg placeholder-zinc-400 w-40 outline-none" />
             </div>
 
             <div className="w-px h-6 bg-zinc-800" />
 
             {isGuestsInputOpen ? (
-              <button className="bg-zinc-800 text-zinc-200 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-zinc-700">
+              <button onClick={closeGuestsInput} className="bg-zinc-800 text-zinc-200 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-zinc-700">
                 Alterar local/data
                 <Settings2 className="size-5" />
               </button>
