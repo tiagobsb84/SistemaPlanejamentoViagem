@@ -9,6 +9,7 @@ export function App() {
     'tiagobsb31@gmail.com',
     'mariabsb55@gmail.com'
   ]);
+  const [ isConfirmTripModalOpen, setIsConfirmTripModal ] = useState(false);
 
   function openGuestsInput(){
     setIsGuestsInputOpen(true);
@@ -24,6 +25,14 @@ export function App() {
 
   function closeGuestsModal() {
     setIsGuestsModalOpen(false);
+  }
+
+  function closeConfirmTripModal() {
+    setIsConfirmTripModal(false);
+  }
+
+  function openConfirmTripModal() {
+    setIsConfirmTripModal(true);
   }
 
   function addNewEmailToInvite(event: FormEvent<HTMLFormElement>) {
@@ -96,12 +105,18 @@ export function App() {
             <div className="h-16 bg-zinc-950 px -4 rounded-xl flex items-center shadow-shape gap-3">
               <button onClick={openGuestsModal} type="button" className="flex items-center gap-2 flex-1">
                 <UserRoundPlus className="size-5 text-zinc-400" />
-                <span className="text-zinc-400 text-lg flex-1 text-left">Quem estará na viagem?</span>
+                {emailsToInvite.length > 0 ? (
+                  <span className="text-zinc-100 text-lg flex-1">
+                    {emailsToInvite.length} pessoa(s) convidada(s)
+                  </span>
+                ) : (
+                  <span className="text-zinc-400 text-lg flex-1 text-left">Quem estará na viagem?</span>
+                )}
               </button>
  
               <div className="w-px h-6 bg-zinc-800" />
     
-              <button className="bg-lime-300 text-lime-950 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-lime-400">
+              <button onClick={openConfirmTripModal} className="bg-lime-300 text-lime-950 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-lime-400">
                 <ArrowRight className="size-5" />
                 Confirma Viagem
               </button>
@@ -165,12 +180,13 @@ export function App() {
         </div>
       )}
 
+      {isConfirmTripModalOpen && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
           <div className="w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold">Confirma criação da viagem</h2>
-                <button type="button" onClick={closeGuestsModal}>
+                <button type="button" onClick={closeConfirmTripModal}>
                   <X className="size-5 text-zinc-400" />
               </button>
               </div>
@@ -197,12 +213,13 @@ export function App() {
                 />
               </div>
               <button type="submit" className="bg-lime-300 w-full justify-center text-lime-950 rounded-lg px-5 py-2 font-medium flex items-center h-11 gap-2 hover:bg-lime-400">
-                <Plus className="size-5" />
-                Convidar
+                Confirmar criação da viagem
               </button>
             </form>
           </div>
         </div>
+      )}
+
     </div>
   )
 }
